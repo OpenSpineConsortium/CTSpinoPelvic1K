@@ -82,6 +82,10 @@ Partition `reqp` with `--qos=requeue` for CPU work; GPU work uses `gmsap`/`gvohp
 - `/tmp` is node-local **and swept**. A cleaner deleted the multiprocessing listener sockets
   of two 18-hour training runs at the same minute; put IPC under `/dev/shm`.
 - Python env with nibabel/scipy: `~/mambaforge/envs/spineps/bin/python`.
+- **Nothing container-related on warrior, and nothing of ours under its `/tmp`** (C&IT, 2026-09-28:
+  a build left 7 GB of `rootfs-*` there). Container builds and execs run only inside Slurm jobs, with
+  `APPTAINER_TMPDIR`/`APPTAINER_CACHEDIR` (and the `SINGULARITY_` twins) on the compute node's local
+  `/tmp` and a cleanup trap; temp that must be shared goes under `/wsu/tmp`, not the login node.
 - **Large outputs go on the CephFS volume**, not the home directory: `/rs/rs_grp_oschome/go2432/`
   (20 TB, group `oschome`, allocated 2026-09-21; `df-ceph oschome` for usage; `model_night/`, `data/`,
   `archive/`, `tmp/` under it). The home directory is a 4.3 TB Panasas soft quota and was 93 % full.
